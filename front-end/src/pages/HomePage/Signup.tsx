@@ -11,7 +11,7 @@ import {
 import { AxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import { useForm, Controller, SubmitHandler } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { signup, User } from 'redux/actions/auth'
 import { PasswordInput } from './homepage.utils'
 import { CleanButton } from './homepage.styles'

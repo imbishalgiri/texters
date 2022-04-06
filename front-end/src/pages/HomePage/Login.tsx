@@ -1,4 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
+import { useAppDispatch } from 'redux/hooks'
+import { login } from 'redux/slices/authSlices'
 import {
    FormControl,
    FormLabel,
@@ -6,11 +8,11 @@ import {
    FormHelperText,
    Input,
 } from '@chakra-ui/react'
+import { AxiosError } from 'axios'
+import { useMutation } from 'react-query'
 import { PasswordInput } from './homepage.utils'
+import { loginAction, UserLogin } from 'redux/actions/auth'
 
-const onLoginSubmit = (data: any) => {
-   console.log('data -->', data)
-}
 import { useForm, Controller } from 'react-hook-form'
 import { CleanButton } from './homepage.styles'
 
@@ -21,11 +23,41 @@ const Login: FC = () => {
       handleSubmit,
       formState: { errors },
       control,
-   } = useForm()
+   } = useForm<UserLogin>()
+
+   const dispatch = useAppDispatch()
+
+   const { mutate, isError, error, isLoading, data } = useMutation<
+      UserLogin,
+      AxiosError,
+      UserLogin
+   >((userTryingToLogin) => {
+      return loginAction(userTryingToLogin)
+   })
+
+   // --------------- (submit handeler: Signup)
+   const onLoginSubmit = ({ email, password }: UserLogin) => {
+      mutate({
+         email,
+         password,
+      })
+   }
+
+   useEffect(() => {
+      if (data) {
+         //   todo: make this dispatch real data to the redux store
+         dispatch(
+            login({
+               user: { name: data.data?.status, email: data.data?.status },
+            })
+         )
+      }
+   }, [data])
+
    return (
       <form onSubmit={handleSubmit(onLoginSubmit)}>
          {/* ------------------------------------- (email field)  */}
-         <FormControl isInvalid={errors.email}>
+         <FormControl isInvalid={errors.email && true}>
             <FormLabel htmlFor="email">
                Email address <span style={{ color: 'red' }}> *</span>
             </FormLabel>
@@ -73,6 +105,8 @@ const Login: FC = () => {
          <br />
          {/* -------------------------------------------- (submit area) */}
          <CleanButton
+            isLoading={isLoading}
+            loadingText={'Logging In'}
             _hover={{ backgroundColor: 'royalblue' }}
             _focus={{ boxShadow: 'none' }}
             type="submit"
