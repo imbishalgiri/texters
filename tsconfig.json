@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "outDir": "./zdist",
+    "rootDir": "backend"
+  },
+  "compileOnSave": true,
+  "include": ["backend"]
+}
