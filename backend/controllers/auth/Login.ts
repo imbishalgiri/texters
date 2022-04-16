@@ -17,9 +17,13 @@ const loginController = async (
       const userFound = await User.findOne({ email: req.body.email })
       // if user not found
       if (!userFound) {
-         return res
-            .status(401)
-            .send({ status: 'failed', data: 'This user does not exist' })
+         return res.status(401).send({
+            status: 'failed',
+            data: {
+               field: 'email',
+               message: 'This user does not exist',
+            },
+         })
       }
       // if user found but password invalid
       if (
@@ -28,9 +32,10 @@ const loginController = async (
             userFound.password
          ))
       ) {
-         return res
-            .status(401)
-            .send({ status: 'failed', data: 'Incorrect Password' })
+         return res.status(401).send({
+            status: 'failed',
+            data: { field: 'password', message: 'Incorrect Password' },
+         })
       }
       // if all the tests get successful
       const { id, name, email } = userFound
