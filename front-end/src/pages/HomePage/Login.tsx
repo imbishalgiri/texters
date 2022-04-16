@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from 'react'
+import jwt from 'jwt-decode'
 import { useAppDispatch } from 'redux/hooks'
 import { login } from 'redux/slices/authSlices'
 import {
@@ -8,7 +9,7 @@ import {
    FormHelperText,
    Input,
 } from '@chakra-ui/react'
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { PasswordInput } from './homepage.utils'
 import { loginAction, UserLogin } from 'redux/actions/auth'
@@ -21,6 +22,8 @@ const Login: FC = () => {
    const {
       register,
       handleSubmit,
+      setError,
+      setFocus,
       formState: { errors },
       control,
    } = useForm<UserLogin>()
@@ -30,7 +33,7 @@ const Login: FC = () => {
    const { mutate, isError, error, isLoading, data } = useMutation<
       UserLogin,
       AxiosError,
-      UserLogin
+      UserLogin<AxiosResponse>
    >((userTryingToLogin) => {
       return loginAction(userTryingToLogin)
    })
@@ -44,16 +47,37 @@ const Login: FC = () => {
    }
 
    useEffect(() => {
+      if (error) {
+         let errorMessage = error.response?.data?.data
+
+         if (errorMessage?.field === 'email') {
+            setError('email', {
+               type: 'custom',
+               message: errorMessage?.message,
+            })
+            setFocus('email')
+         }
+         if (errorMessage?.field === 'password') {
+            setError('password', {
+               type: 'custom',
+               message: errorMessage?.message,
+            })
+         }
+      }
       if (data) {
          //   todo: make this dispatch real data to the redux store
+         const response = data?.data
+         const decoded = jwt<{
+            user: { name: string; email: string; id?: string }
+         }>(response?.token)
          dispatch(
             login({
-               user: { name: data.data?.status, email: data.data?.status },
+               user: { name: decoded?.user?.name, email: decoded?.user?.email },
             })
          )
+         localStorage.setItem('chatAppToken', response?.token)
       }
-   }, [data])
-
+   }, [data, isError])
    return (
       <form onSubmit={handleSubmit(onLoginSubmit)}>
          {/* ------------------------------------- (email field)  */}
@@ -83,15 +107,19 @@ const Login: FC = () => {
          <br />
          {/* ------------------------------------- (password field) */}
          <Controller
-            render={({ field: { ref, ...rest } }) => (
-               <PasswordInput
-                  label="Password"
-                  placeholder="Enter Password"
-                  isRequired
-                  error={errors.password}
-                  {...rest}
-               />
-            )}
+            render={({ field: { ref, value, ...rest } }) => {
+               return (
+                  <PasswordInput
+                     label="password"
+                     id="password"
+                     placeholder="Enter Password"
+                     isRequired
+                     value={value}
+                     error={errors.password}
+                     {...rest}
+                  />
+               )
+            }}
             name="password"
             control={control}
             rules={{

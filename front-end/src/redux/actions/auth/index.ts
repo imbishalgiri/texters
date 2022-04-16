@@ -1,4 +1,5 @@
 import apiRequest from 'utils/axios'
+import { AxiosResponse } from 'axios'
 
 export type User = {
    name: string
@@ -7,9 +8,10 @@ export type User = {
    passwordConfirm?: string
 }
 
-export type UserLogin = {
+export interface UserLogin<T = any> {
    email: string
    password: string
+   data?: T
 }
 
 const EndPoint = 'auth'

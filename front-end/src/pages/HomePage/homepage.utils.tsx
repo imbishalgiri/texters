@@ -15,7 +15,7 @@ import {
    forwardRef,
 } from '@chakra-ui/react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
-import { useController } from 'react-hook-form'
+
 // ------------------------------------- End of Imports
 
 // Modified Tab component (removed default focus behavior)
