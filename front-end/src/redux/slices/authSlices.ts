@@ -6,12 +6,13 @@ interface AuthState {
    user: {
       name: string
       email: string
+      isLoggedIn: boolean
    }
 }
 
 // Define the initial state using above type
 const initialState: AuthState = {
-   user: { name: '', email: '' },
+   user: { isLoggedIn: false, name: '', email: '' },
 }
 
 export const loginSlice = createSlice({

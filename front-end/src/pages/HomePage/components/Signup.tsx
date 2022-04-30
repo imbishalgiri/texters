@@ -13,8 +13,8 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { useForm, Controller } from 'react-hook-form'
 import { signup, User } from 'redux/actions/auth'
-import { PasswordInput } from './homepage.utils'
-import { CleanButton } from './homepage.styles'
+import { PasswordInput } from '../utils/homepage.utils'
+import { CleanButton } from '../styles/homepage.styles'
 
 // ----------------- (Main Component)
 const Signup: FC = () => {

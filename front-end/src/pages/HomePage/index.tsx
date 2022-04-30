@@ -1,10 +1,17 @@
 import React, { FC, useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Tabs, TabList, TabPanels, TabPanel } from '@chakra-ui/react'
-import { HomepageBox, CenterFlex, Overlay, MiddleBox } from './homepage.styles'
-import { CleanTab } from './homepage.utils'
-import Login from './Login'
-import Signup from './Signup'
+import {
+   HomepageBox,
+   CenterFlex,
+   Overlay,
+   MiddleBox,
+} from './styles/homepage.styles'
+import { CleanTab } from './utils/homepage.utils'
+import { RootState } from 'redux/store'
+import { useSelector } from 'react-redux'
+import Login from './components/Login'
+import Signup from './components/Signup'
 
 // ----------------------- (End of Imports)
 
@@ -13,7 +20,7 @@ const HomePage: FC = () => {
    const [tab, setTab] = useState(0)
    const navigate = useNavigate()
    const urlLocation = useLocation()
-
+   const user = useSelector((state: RootState) => state.auth)
    useEffect(() => {
       const urlAndTabMapping = {
          login: 0,
@@ -21,6 +28,9 @@ const HomePage: FC = () => {
       }
       let route = urlLocation.hash.slice(1) as keyof typeof urlAndTabMapping
       setTab(urlAndTabMapping[route])
+      if (user.user?.isLoggedIn) {
+         navigate('/chatpage')
+      }
    }, [urlLocation])
 
    const handleTabsChange = (index: number) => {

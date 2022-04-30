@@ -9,13 +9,14 @@ import {
    FormHelperText,
    Input,
 } from '@chakra-ui/react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
-import { PasswordInput } from './homepage.utils'
+import { PasswordInput } from '../utils/homepage.utils'
 import { loginAction, UserLogin } from 'redux/actions/auth'
 
 import { useForm, Controller } from 'react-hook-form'
-import { CleanButton } from './homepage.styles'
+import { CleanButton } from '../styles/homepage.styles'
 
 // ------- (main component)
 const Login: FC = () => {
@@ -29,6 +30,7 @@ const Login: FC = () => {
    } = useForm<UserLogin>()
 
    const dispatch = useAppDispatch()
+   const navigate = useNavigate()
 
    const { mutate, isError, error, isLoading, data } = useMutation<
       UserLogin,
@@ -72,10 +74,15 @@ const Login: FC = () => {
          }>(response?.token)
          dispatch(
             login({
-               user: { name: decoded?.user?.name, email: decoded?.user?.email },
+               user: {
+                  isLoggedIn: true,
+                  name: decoded?.user?.name,
+                  email: decoded?.user?.email,
+               },
             })
          )
          localStorage.setItem('chatAppToken', response?.token)
+         navigate('/chatpage')
       }
    }, [data, isError])
    return (
