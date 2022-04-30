@@ -3,6 +3,8 @@ import Joi from 'joi'
 
 import validationFields from './validatorRules'
 
+type validationResponse = {}
+
 /*
   @params:
    1 -> fields<array>
@@ -27,7 +29,7 @@ const getValidationObject = (fields: string[]) => {
 // -------------------- utility function area end
 
 // signup validation
-const verifySignup = (body: Request) => {
+const verifySignup = (body: Request): any => {
    let customError = null
    const Schema = Joi.object(getValidationObject(['name', 'email', 'password']))
    const { error, value } = Schema.validate(body, {
@@ -43,7 +45,7 @@ const verifySignup = (body: Request) => {
 }
 
 // Login Validation
-const verifyLogin = (body: Request) => {
+const verifyLogin = (body: Request): any => {
    let customError = null
    const Schema = Joi.object(getValidationObject(['email', 'password']))
    const { error, value } = Schema.validate(body, {

@@ -1,9 +1,13 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response } from 'express'
+import { getAllUsers } from '../controllers/user'
+import passport from 'passport'
+const UserRouter = express.Router()
 
-import { signupController } from "../controllers/auth/Signup";
+// protected route
+UserRouter.get(
+   '/all',
+   passport.authenticate('jwt', { session: false }),
+   getAllUsers
+)
 
-const Router = express.Router();
-
-Router.get("/").post("/signup", signupController);
-
-export default Router;
+export default UserRouter

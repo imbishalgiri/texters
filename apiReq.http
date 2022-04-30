@@ -1,5 +1,3 @@
 
-# GET http://localhost:4000/
-
-
-GET http://localhost:4000/api/user/
+# to get all users
+GET http://localhost:4000/api/user

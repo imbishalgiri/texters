@@ -1,16 +1,19 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "noImplicitAny": true,
-    "allowJs": true,
-    "outDir": "./zdist",
-    "rootDir": "backend"
-  },
-  "compileOnSave": true,
-  "include": ["backend"]
+   "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": false,
+      "noImplicitAny": true,
+      "allowJs": true,
+      "outDir": "./zdist",
+      "rootDir": "backend",
+      "sourceMap": true,
+      "typeRoots": ["@types", "./node_modules/@types"]
+   },
+
+   "compileOnSave": true,
+   "include": ["backend"]
 }

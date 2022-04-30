@@ -1,19 +1,7 @@
-import { Schema, model, Model, Types } from 'mongoose'
-import { NextFunction } from 'express'
+import { Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
-// type definition for user model
-interface typeUser {
-   name: string
-   email: string
-   password: string
-   avatar?: string
-   isValidPassword(
-      candidatePassword: string,
-      userPassword: string
-   ): Promise<boolean>
-}
 
-interface UserModel extends Model<typeUser> {}
+import { typeUser, UserModel } from '../types'
 
 // data architecture of user model
 const userSchema = new Schema<typeUser>(

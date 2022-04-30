@@ -4,7 +4,10 @@ import User from '../../models/userModel'
 import { verifySignup } from './validator'
 
 // contolling user sign up right here
-const signupController = async (req: Request, res: Response) => {
+const signupController = async (
+   req: Request,
+   res: Response
+): Promise<Response> => {
    const { error } = verifySignup(req.body)
    const user = new User(req.body)
    if (error) {
@@ -22,7 +25,6 @@ const signupController = async (req: Request, res: Response) => {
       const createdUser = await user.save()
       return res.status(201).send({ status: 'success', data: createdUser })
    } catch (err) {
-      console.log('error -->', err)
       return res.status(500).send({ error: err })
    }
 }

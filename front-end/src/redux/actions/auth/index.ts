@@ -14,14 +14,14 @@ export interface UserLogin<T = any> {
    data?: T
 }
 
-const EndPoint = 'auth'
+const ENDPOINT = 'auth'
 
 const signup = <User>(data: User): Promise<User> => {
-   return apiRequest.post(`${EndPoint}/signup`, data)
+   return apiRequest.post(`${ENDPOINT}/signup`, data)
 }
 
 const loginAction = (data: UserLogin): Promise<UserLogin> => {
-   return apiRequest.post(`${EndPoint}/login`, data)
+   return apiRequest.post(`${ENDPOINT}/login`, data)
 }
 
 export { signup, loginAction }

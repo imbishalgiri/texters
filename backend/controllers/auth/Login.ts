@@ -7,7 +7,7 @@ const loginController = async (
    req: Request,
    res: Response,
    next: NextFunction
-) => {
+): Promise<Response> => {
    const { error } = verifyLogin(req.body)
 
    if (error) {
