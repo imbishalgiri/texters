@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useNavigate } from 'react-router'
 import {
@@ -7,18 +7,44 @@ import {
    Input,
    InputGroup,
    InputRightElement,
+   Menu,
+   MenuButton,
+   MenuList,
+   MenuItem,
+   Button,
+   Spacer,
+   Flex,
+   Avatar,
+   Modal,
+   ModalOverlay,
+   ModalContent,
+   ModalHeader,
+   ModalFooter,
+   ModalBody,
+   ModalCloseButton,
+   useDisclosure,
 } from '@chakra-ui/react'
-import { Button, Spacer, Flex } from '@chakra-ui/react'
+import UploadImage from './components/upload'
+import { ChevronDownIcon } from '@chakra-ui/icons'
+
 import { useAppDispatch } from 'redux/hooks'
 import { logout } from 'redux/slices/authSlices'
 
 function ChatPage() {
    const navigate = useNavigate()
    const dispatch = useAppDispatch()
+   const [imgUploadModel, setImgUploadModel] = useState(false)
+   const [uploadData, setUploadData] = useState<FormData>()
 
    const handleLogout = () => {
       dispatch(logout())
       navigate('/')
+   }
+
+   const onFileChooseClick = (data: File) => {
+      const formData = new FormData()
+      formData.append('image', data)
+      setUploadData(formData)
    }
 
    return (
@@ -26,9 +52,21 @@ function ChatPage() {
          <Flex background={'#2118c8'} color={'#fff'} padding={'30px 40px'}>
             <Box fontWeight={'800'}>LOGO HERE</Box>
             <Spacer />
-            <Button color={'#000'} onClick={handleLogout}>
-               Logout
-            </Button>
+
+            <Menu>
+               <MenuButton
+                  as={Button}
+                  rightIcon={<ChevronDownIcon color="#000" />}
+               >
+                  <Avatar size="sm" name="Bishal" src="user" />
+               </MenuButton>
+               <MenuList color="#000">
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem onClick={() => setImgUploadModel(true)}>
+                     Change picture
+                  </MenuItem>
+               </MenuList>
+            </Menu>
          </Flex>
          <br />
          <br />
@@ -75,6 +113,35 @@ function ChatPage() {
                </Box>
             </Flex>
          </Flex>
+
+         {imgUploadModel && (
+            <Modal
+               isCentered
+               isOpen={imgUploadModel}
+               onClose={() => setImgUploadModel(false)}
+               motionPreset="slideInBottom"
+            >
+               <ModalOverlay />
+               <ModalContent>
+                  <ModalHeader>Image Upload</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                     <UploadImage onFileChooseClick={onFileChooseClick} />
+                  </ModalBody>
+
+                  <ModalFooter>
+                     <Button
+                        colorScheme="cyan"
+                        mr={3}
+                        onClick={() => setImgUploadModel(false)}
+                     >
+                        Close
+                     </Button>
+                     {uploadData && <Button colorScheme="blue">Upload</Button>}
+                  </ModalFooter>
+               </ModalContent>
+            </Modal>
+         )}
       </>
    )
 }

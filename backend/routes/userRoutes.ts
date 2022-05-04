@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { getAllUsers } from '../controllers/user'
+import { getAllUsers, updateImage } from '../controllers/user'
 import passport from 'passport'
 const UserRouter = express.Router()
 
@@ -8,6 +8,12 @@ UserRouter.get(
    '/all',
    passport.authenticate('jwt', { session: false }),
    getAllUsers
+)
+
+UserRouter.patch(
+   '/addImage',
+   passport.authenticate('jwt', { session: false }),
+   updateImage
 )
 
 export default UserRouter

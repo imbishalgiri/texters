@@ -20,4 +20,6 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
    }
 }
 
-export { getAllUsers }
+const updateImage = (req: Request, res: Response) => {}
+
+export { getAllUsers, updateImage }
