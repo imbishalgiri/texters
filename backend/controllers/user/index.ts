@@ -20,6 +20,25 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
    }
 }
 
-const updateImage = (req: Request, res: Response) => {}
+// upload image to the cloudinary
+const updateImage = async (req: Request, res: Response) => {
+   const userID = req.user?._id
+
+   try {
+      const imageUrl = req.file?.path
+
+      if (imageUrl) {
+         await User.findByIdAndUpdate(userID, {
+            avatar: imageUrl,
+         })
+         res.status(200).send({
+            status: 'success',
+            imageUrl: imageUrl,
+         })
+      }
+   } catch (err) {
+      res.status(500).send({ status: 'failed', error: 'err' })
+   }
+}
 
 export { getAllUsers, updateImage }

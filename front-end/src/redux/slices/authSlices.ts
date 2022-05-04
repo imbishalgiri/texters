@@ -24,6 +24,7 @@ export const loginSlice = createSlice({
          state.user = action.payload.user
       },
       logout: (state) => {
+         localStorage.removeItem('chatAppToken')
          state.user = { isLoggedIn: false, name: '', email: '' }
       },
    },

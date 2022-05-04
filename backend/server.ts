@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from 'express'
-import dotenv from 'dotenv'
+
 import cors from 'cors'
 import passport from 'passport'
 
@@ -7,16 +7,20 @@ import UserRoutes from './routes/userRoutes'
 import AuthRoutes from './routes/authRoutes'
 import chatRoutes from './routes/chatRoutes'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 // setting up constants
 const port = process.env.PORT || 4000
+
+// cloudinary imports
+import './config/cloudinary'
 
 const app: Application = express()
 
 app.use(cors())
 
 app.use(express.json())
-
-dotenv.config()
 
 // passport js setup
 app.use(passport.initialize())
