@@ -23,10 +23,13 @@ export const loginSlice = createSlice({
       login: (state, action: PayloadAction<AuthState>) => {
          state.user = action.payload.user
       },
+      logout: (state) => {
+         state.user = { isLoggedIn: false, name: '', email: '' }
+      },
    },
 })
 
-export const { login } = loginSlice.actions
+export const { login, logout } = loginSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.auth

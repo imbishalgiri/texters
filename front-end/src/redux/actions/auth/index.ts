@@ -1,5 +1,7 @@
 import apiRequest from 'utils/axios'
-import { AxiosResponse } from 'axios'
+import { useNavigate } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { logout } from 'redux/slices/authSlices'
 
 export type User = {
    name: string
