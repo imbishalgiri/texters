@@ -14,13 +14,17 @@ function App() {
    const token = localStorage.getItem('chatAppToken')
    const dispatch = useAppDispatch()
    if (token) {
-      const decoded = jwt<{ user: { name: string; email: string } }>(token)
+      const decoded = jwt<{
+         user: { name: string; email: string; _id: string; avatar: string }
+      }>(token)
       dispatch(
          login({
             user: {
                isLoggedIn: true,
                name: decoded?.user?.name,
                email: decoded?.user?.email,
+               id: decoded?.user?._id,
+               avatar: decoded.user?.avatar,
             },
          })
       )

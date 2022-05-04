@@ -1,7 +1,4 @@
 import apiRequest from 'utils/axios'
-import { useNavigate } from 'react-router'
-import { useDispatch } from 'react-redux'
-import { logout } from 'redux/slices/authSlices'
 
 export type User = {
    name: string
@@ -9,7 +6,6 @@ export type User = {
    password: string
    passwordConfirm?: string
 }
-
 export interface UserLogin<T = any> {
    email: string
    password: string

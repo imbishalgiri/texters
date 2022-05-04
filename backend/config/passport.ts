@@ -15,9 +15,12 @@ const options = {
 
 passport.use(
    new JwtStrategy(options, function (jwt_payload, done) {
-      User.findOne(
-         { id: jwt_payload.id },
+      console.log('jwt-payload', jwt_payload)
+      User.findById(
+         jwt_payload.user._id,
+         { lean: true },
          function (err: ErrorRequestHandler, user: typeUser) {
+            console.log('user -->', user)
             if (err) {
                return done(err, false)
             }

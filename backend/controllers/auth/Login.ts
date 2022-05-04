@@ -38,8 +38,8 @@ const loginController = async (
          })
       }
       // if all the tests get successful
-      const { id, name, email } = userFound
-      const payload = { id, email, name }
+      const { _id, name, email, avatar } = userFound
+      const payload = { _id, email, name, avatar }
       const token = jwt.sign({ user: payload }, `${process.env.JWT_SECRET}`)
 
       return res.status(200).send({

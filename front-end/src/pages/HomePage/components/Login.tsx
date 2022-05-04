@@ -70,14 +70,16 @@ const Login: FC = () => {
          //   todo: make this dispatch real data to the redux store
          const response = data?.data
          const decoded = jwt<{
-            user: { name: string; email: string; id?: string }
+            user: { name: string; email: string; _id: string; avatar: string }
          }>(response?.token)
          dispatch(
             login({
                user: {
                   isLoggedIn: true,
+                  id: decoded?.user?._id,
                   name: decoded?.user?.name,
                   email: decoded?.user?.email,
+                  avatar: decoded?.user?.avatar,
                },
             })
          )
@@ -85,6 +87,7 @@ const Login: FC = () => {
          navigate('/chatpage')
       }
    }, [data, isError])
+   // --- (end of useEffect hook)
    return (
       <form onSubmit={handleSubmit(onLoginSubmit)}>
          {/* ------------------------------------- (email field)  */}

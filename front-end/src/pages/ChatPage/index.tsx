@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useNavigate } from 'react-router'
 import {
@@ -22,20 +22,25 @@ import {
    ModalFooter,
    ModalBody,
    ModalCloseButton,
-   useDisclosure,
+   useToast,
 } from '@chakra-ui/react'
 import UploadImage from './components/upload'
 import { ChevronDownIcon } from '@chakra-ui/icons'
-
-import { useAppDispatch } from 'redux/hooks'
+import { AxiosError, AxiosResponse } from 'axios'
+import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import { logout } from 'redux/slices/authSlices'
 import { HomepageBox } from 'pages/HomePage/styles/homepage.styles'
+import { addImage } from 'redux/actions/user'
+import { useMutation } from 'react-query'
 
 function ChatPage() {
    const navigate = useNavigate()
    const dispatch = useAppDispatch()
+   const Toast = useToast()
+   const user = useAppSelector((state) => state.auth)
    const [imgUploadModel, setImgUploadModel] = useState(false)
    const [uploadData, setUploadData] = useState<FormData>()
+   const [avatar, setAvatar] = useState('')
 
    const handleLogout = () => {
       dispatch(logout())
@@ -47,6 +52,32 @@ function ChatPage() {
       formData.append('image', data)
       setUploadData(formData)
    }
+   const { mutate, isError, error, isLoading, data } = useMutation<
+      AxiosResponse, // expected response
+      AxiosError, // this is expected error object
+      FormData // this is expected upload data
+   >((data) => {
+      return addImage(data)
+   })
+   const onImageUpdate = () => {
+      console.log(uploadData)
+      uploadData && mutate(uploadData)
+   }
+
+   useEffect(() => {
+      setAvatar(user?.user?.avatar)
+      if (data) {
+         setImgUploadModel(false)
+         Toast({
+            title: 'Image uploaded successfully',
+            description: 'Other users can see your image right away',
+            status: 'success',
+            position: 'top-right',
+            duration: 7000,
+            isClosable: true,
+         })
+      }
+   }, [user, data])
 
    return (
       <>
@@ -65,7 +96,7 @@ function ChatPage() {
                      as={Button}
                      rightIcon={<ChevronDownIcon color="#000" />}
                   >
-                     <Avatar size="sm" name="Bishal" src="user" />
+                     <Avatar size="sm" name={user.user.name} src={avatar} />
                   </MenuButton>
                   <MenuList color="#000">
                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
@@ -153,7 +184,13 @@ function ChatPage() {
                            Close
                         </Button>
                         {uploadData && (
-                           <Button colorScheme="blue">Upload</Button>
+                           <Button
+                              isLoading={isLoading}
+                              colorScheme="blue"
+                              onClick={onImageUpdate}
+                           >
+                              Upload
+                           </Button>
                         )}
                      </ModalFooter>
                   </ModalContent>

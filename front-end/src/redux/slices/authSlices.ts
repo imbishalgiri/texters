@@ -7,12 +7,14 @@ interface AuthState {
       name: string
       email: string
       isLoggedIn: boolean
+      avatar: string
+      id: string
    }
 }
 
 // Define the initial state using above type
 const initialState: AuthState = {
-   user: { isLoggedIn: false, name: '', email: '' },
+   user: { isLoggedIn: false, name: '', email: '', avatar: '', id: '' },
 }
 
 export const loginSlice = createSlice({
@@ -25,7 +27,13 @@ export const loginSlice = createSlice({
       },
       logout: (state) => {
          localStorage.removeItem('chatAppToken')
-         state.user = { isLoggedIn: false, name: '', email: '' }
+         state.user = {
+            isLoggedIn: false,
+            name: '',
+            email: '',
+            avatar: '',
+            id: '',
+         }
       },
    },
 })
