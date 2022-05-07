@@ -1,37 +1,8 @@
 import React from 'react'
+import { Box, Center, Flex } from '@chakra-ui/react'
+import { HomepageBox } from 'pages/HomePage/styles/homepage.styles'
 import Sidebar from './components/sidebar'
 import TopMenu from './components/topMenu'
-import {
-   Box,
-   Center,
-   Input,
-   InputGroup,
-   InputRightElement,
-   Menu,
-   MenuButton,
-   MenuList,
-   MenuItem,
-   Button,
-   Spacer,
-   Flex,
-   Avatar,
-   Modal,
-   ModalOverlay,
-   ModalContent,
-   ModalHeader,
-   ModalFooter,
-   ModalBody,
-   ModalCloseButton,
-   useToast,
-} from '@chakra-ui/react'
-import UploadImage from './components/upload'
-import { ChevronDownIcon } from '@chakra-ui/icons'
-import { AxiosError, AxiosResponse } from 'axios'
-import { useAppDispatch, useAppSelector } from 'redux/hooks'
-import { logout } from 'redux/slices/authSlices'
-import { HomepageBox } from 'pages/HomePage/styles/homepage.styles'
-
-import { useMutation } from 'react-query'
 
 function ChatPage() {
    return (

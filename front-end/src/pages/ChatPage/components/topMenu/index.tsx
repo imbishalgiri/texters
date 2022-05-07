@@ -73,6 +73,16 @@ const TopMenu = () => {
             isClosable: true,
          })
       }
+      if (isError) {
+         Toast({
+            title: 'Error',
+            description: 'Sorry :( server or network error',
+            status: 'error',
+            position: 'top-right',
+            duration: 7000,
+            isClosable: true,
+         })
+      }
    }, [user, data])
 
    return (
