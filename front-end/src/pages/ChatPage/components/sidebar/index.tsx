@@ -2,11 +2,9 @@ import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import {
    Box,
-   Center,
    InputGroup,
    Input,
    InputRightElement,
-   HStack,
    Stack,
    Button,
    Skeleton,
@@ -15,8 +13,6 @@ import {
 } from '@chakra-ui/react'
 import { getAllUsers } from 'redux/actions/user'
 import { AxiosError, AxiosResponse } from 'axios'
-import { User } from 'redux/actions/auth'
-import { Group } from 'framer-motion/types/components/Reorder/Group'
 
 // this is a main component
 const Sidebar = () => {
@@ -28,10 +24,9 @@ const Sidebar = () => {
    >(['users', searchText], () => getAllUsers(searchText), { enabled: false })
 
    const searchUser = () => {
-      console.log('clicked')
       refetch()
    }
-   console.log('isLoading', isLoading)
+   data && console.log(data)
    return (
       <Box
          borderRadius="10px"
@@ -48,6 +43,11 @@ const Sidebar = () => {
                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearchText(e.target.value)
                }
+               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter') {
+                     searchUser()
+                  }
+               }}
                pr="5rem"
                placeholder="search user"
                size="md"
@@ -71,6 +71,9 @@ const Sidebar = () => {
                      width="100%"
                      padding="7px"
                      borderRadius="5px"
+                     cursor="pointer"
+                     transition=".5s ease"
+                     _hover={{ background: ' #cecff0' }}
                   >
                      <Flex>
                         <Avatar
@@ -87,6 +90,19 @@ const Sidebar = () => {
                   </Box>
                )
             )}
+
+         {data && !data?.data.data.length && (
+            <Box
+               background="#fff"
+               color="#000"
+               margin="15px 0 15px 0"
+               width="100%"
+               padding="7px"
+               borderRadius="5px"
+            >
+               Sorry! No users by that name
+            </Box>
+         )}
 
          {(isLoading || isFetching) && (
             <Stack marginTop="20px">
