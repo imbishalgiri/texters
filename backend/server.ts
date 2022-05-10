@@ -5,7 +5,8 @@ import passport from 'passport'
 
 import UserRoutes from './routes/userRoutes'
 import AuthRoutes from './routes/authRoutes'
-import chatRoutes from './routes/chatRoutes'
+import ChatRoutes from './routes/chatRoutes'
+import MessageRoutes from './routes/messageRoutes'
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -33,7 +34,8 @@ import './config/database'
 // app  Routes in here
 app.use('/api/auth/', AuthRoutes)
 app.use('/api/user/', UserRoutes)
-app.use('/api/chat/', chatRoutes)
+app.use('/api/chat/', ChatRoutes)
+app.use('/api/message/', MessageRoutes)
 app.get('/', (req: Request, res: Response) => {
    res.send('Hello World this is endpoint /')
 })

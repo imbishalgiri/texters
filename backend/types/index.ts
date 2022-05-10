@@ -8,6 +8,7 @@ export interface typesChat {
    users: Array<Types.ObjectId>
    message: Types.ObjectId
    admin: Types.ObjectId
+   recentMessage: string
 }
 
 // type definition for message model

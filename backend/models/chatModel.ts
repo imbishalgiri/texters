@@ -7,7 +7,7 @@ const schema = new Schema<typesChat>(
       chatName: { type: String, required: true, trim: true },
       isGroupChat: { type: Boolean, default: false },
       users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-      message: { type: Schema.Types.ObjectId, ref: 'Message' },
+      recentMessage: { type: String, required: true },
       admin: { type: Schema.Types.ObjectId, ref: 'User' },
    },
    { timestamps: true }
