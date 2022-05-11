@@ -12,7 +12,6 @@ type receiver = {
 }
 
 const ReceiverItem = ({ avatar, name, text }: sender) => {
-   useEffect(() => {})
    return (
       <HStack margin={-2}>
          {avatar && (

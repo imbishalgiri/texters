@@ -9,6 +9,7 @@ export interface typesChat {
    message: Types.ObjectId
    admin: Types.ObjectId
    recentMessage: string
+   image: string
 }
 
 // type definition for message model

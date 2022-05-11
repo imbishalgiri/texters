@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Avatar } from '@chakra-ui/react'
+import { Box, Flex, Avatar, Center } from '@chakra-ui/react'
 
 type CardItemType = {
    index: number
@@ -7,9 +7,10 @@ type CardItemType = {
       name: string
       avatar: string
    }
+   latestMessage?: string
 }
 
-const CardItem = ({ index, data }: CardItemType) => (
+const CardItem = ({ index, data, latestMessage }: CardItemType) => (
    <Box
       key={index}
       background="#fff"
@@ -22,14 +23,14 @@ const CardItem = ({ index, data }: CardItemType) => (
       transition=".5s ease"
       _hover={{ background: ' #cecff0' }}
    >
-      <Flex>
+      <Flex alignItems="center">
          {data.avatar && (
             <Avatar name={data?.name} src={data.avatar} marginLeft="0" />
          )}
          <Box marginLeft="10px">
             <strong>{data?.name}</strong>
             <br />
-            <small>what is up??</small>
+            {latestMessage && <small>{latestMessage?.slice(0, 20)}...</small>}
          </Box>
       </Flex>
    </Box>
