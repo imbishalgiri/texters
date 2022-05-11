@@ -9,10 +9,7 @@ const ChatItem = () => {
       AxiosError
    >('users', () => getAllChats())
 
-   useEffect(() => {}, [data])
-
-   console.log('chat data -->', data)
    return <></>
 }
 
-export default ChatItem
+export default memo(ChatItem)
