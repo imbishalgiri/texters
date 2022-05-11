@@ -1,9 +1,19 @@
 import React from 'react'
-import { Avatar, Box, Center, Flex, Spacer, HStack } from '@chakra-ui/react'
+import {
+   Avatar,
+   Box,
+   Center,
+   Flex,
+   Spacer,
+   HStack,
+   Input,
+} from '@chakra-ui/react'
 import { HomepageBox } from 'pages/HomePage/styles/homepage.styles'
 import Sidebar from './components/sidebar'
 import TopMenu from './components/topMenu'
 import { ReceiverItem, SenderItem } from './utils/ChatItem'
+import EmptyMessage, { MessageSpinner } from './utils/EmptyMessage'
+import { ChatIcon } from '@chakra-ui/icons'
 
 function ChatPage() {
    return (
@@ -36,7 +46,14 @@ function ChatPage() {
                         height="100%"
                         direction="column"
                         paddingRight="2rem"
+                        paddingTop="1.5rem"
+                        paddingBottom="6rem"
                      >
+                        <ReceiverItem
+                           // avatar="idk"
+                           name="samantha doe"
+                           text="I am Receiver first got it???"
+                        />
                         <ReceiverItem
                            avatar="idk"
                            name="samantha doe"
@@ -46,9 +63,19 @@ function ChatPage() {
                         <SenderItem text="I am damn sender Xd" />
                         <SenderItem text="I am damn sender Xd" />
                         <ReceiverItem
-                           avatar="idk"
+                           // avatar="idk"
                            name="samantha doe"
                            text="I am REceiver myan"
+                        />
+                        <ReceiverItem
+                           // avatar="idk"
+                           name="samantha doe"
+                           text="I am REceidsfdsfsdf ver myan"
+                        />
+                        <ReceiverItem
+                           avatar="idk"
+                           name="samantha doe"
+                           text="I am REc  eiver myan"
                         />
                         <SenderItem text="I am damn sender Xd" />
                         <SenderItem text="I am damn sender Xd" />
@@ -61,22 +88,9 @@ function ChatPage() {
                         <SenderItem text="I am damn sender Xd" />
                      </Flex> */}
 
-                     <Flex
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
-                        width="100%"
-                        height="100%"
-                     >
-                        <div>
-                           <strong>
-                              You Guys do not have any messages yet !!!
-                           </strong>
-                           <br />
-                        </div>
+                     <EmptyMessage />
 
-                        <Box>Please write your first message</Box>
-                     </Flex>
+                     {/* <MessageSpinner /> */}
                      <Box
                         position="absolute"
                         padding="1rem"
@@ -85,7 +99,24 @@ function ChatPage() {
                         background="#ede7e7"
                      >
                         <Center>
-                           I will be Replaced by message Typing item
+                           <Input
+                              type="text"
+                              placeholder="write a message here"
+                              border="#fff"
+                              background="#b4b4c6"
+                              zIndex="20"
+                              color="#3e3939"
+                              _placeholder={{ color: '#464040' }}
+                              width="60%"
+                              margin="0 10px"
+                           />
+
+                           <ChatIcon
+                              cursor="pointer"
+                              margin="0 10px"
+                              color="#241cb5"
+                              fontSize="1.6rem"
+                           />
                         </Center>
                      </Box>
                   </Box>

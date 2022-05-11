@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
 import {
    Box,
@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { getAllUsers } from 'redux/actions/user'
 import { AxiosError, AxiosResponse } from 'axios'
+import ChatItem from './ChatItem'
 
 // this is a main component
 const Sidebar = () => {
@@ -24,9 +25,13 @@ const Sidebar = () => {
    >(['users', searchText], () => getAllUsers(searchText), { enabled: false })
 
    const searchUser = () => {
-      refetch()
+      searchText && refetch()
    }
-   data && console.log(data)
+   const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value),
+      [searchText]
+   )
+   // const MemoizedChat = useCallback(() => <ChatItem />, [])
    return (
       <Box
          borderRadius="10px"
@@ -40,9 +45,7 @@ const Sidebar = () => {
             <Input
                color="#fff"
                value={searchText}
-               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSearchText(e.target.value)
-               }
+               onChange={handleChange}
                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === 'Enter') {
                      searchUser()
@@ -60,6 +63,7 @@ const Sidebar = () => {
                </Button>
             </InputRightElement>
          </InputGroup>
+         <ChatItem />
          {!isLoading &&
             data?.data.data.map(
                (el: { name: string; avatar: string }, index: number) => (
