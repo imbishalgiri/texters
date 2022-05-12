@@ -1,17 +1,28 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo } from 'react'
+import { useAppDispatch } from 'redux/hooks'
 import { useQuery } from 'react-query'
-import { getAllChats } from 'redux/actions/chat'
+import { useNavigate } from 'react-router'
 import { AxiosError, AxiosResponse } from 'axios'
+import { Stack, Skeleton } from '@chakra-ui/react'
+
+import { getAllChats } from 'redux/actions/chat'
 import CardItem from 'pages/ChatPage/utils/CardItem'
 import { useAppSelector } from 'redux/hooks'
-import { Stack, Skeleton } from '@chakra-ui/react'
+import { addChat } from 'redux/slices/chatSlices'
 
 const ChatItem = () => {
    const { user } = useAppSelector((state) => state.auth)
+   const dispatch = useAppDispatch()
+   const navigate = useNavigate()
    const { isLoading, isFetching, error, data, refetch } = useQuery<
       AxiosResponse,
       AxiosError
    >('users', () => getAllChats())
+
+   const handleClick = (id: string): void => {
+      navigate('?id=' + id)
+      dispatch(addChat({ chatId: id }))
+   }
 
    const getAllCards = () => {
       if (data) {
@@ -25,6 +36,7 @@ const ChatItem = () => {
                   index={index}
                   data={userData}
                   latestMessage={el.recentMessage}
+                  clickFunction={() => handleClick(el._id)}
                />
             )
          })

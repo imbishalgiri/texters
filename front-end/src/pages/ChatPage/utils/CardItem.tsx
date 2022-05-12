@@ -8,9 +8,15 @@ type CardItemType = {
       avatar: string
    }
    latestMessage?: string
+   clickFunction: () => void
 }
 
-const CardItem = ({ index, data, latestMessage }: CardItemType) => (
+const CardItem = ({
+   index,
+   data,
+   latestMessage,
+   clickFunction,
+}: CardItemType) => (
    <Box
       key={index}
       background="#fff"
@@ -22,6 +28,7 @@ const CardItem = ({ index, data, latestMessage }: CardItemType) => (
       cursor="pointer"
       transition=".5s ease"
       _hover={{ background: ' #cecff0' }}
+      onClick={clickFunction}
    >
       <Flex alignItems="center">
          {data.avatar && (

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from 'redux/store'
 
 // Define a type for the login slice state
 interface AuthState {
@@ -22,10 +21,10 @@ export const loginSlice = createSlice({
    // `createSlice` will infer the state type from the `initialState` argument
    initialState,
    reducers: {
-      login: (state, action: PayloadAction<AuthState>) => {
+      login: (state: AuthState, action: PayloadAction<AuthState>) => {
          state.user = action.payload.user
       },
-      logout: (state) => {
+      logout: (state: AuthState) => {
          localStorage.removeItem('chatAppToken')
          state.user = {
             isLoggedIn: false,
@@ -41,6 +40,6 @@ export const loginSlice = createSlice({
 export const { login, logout } = loginSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectUser = (state: RootState) => state.auth
+// export const selectUser = (state: RootState) => state.auth
 
 export default loginSlice.reducer
