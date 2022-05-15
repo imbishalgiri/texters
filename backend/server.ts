@@ -100,5 +100,8 @@ io.on('connection', (socket) => {
       console.log('user joined room -->', id)
    })
 
-   socket.on('newMessage', (newMessageReceived) => {})
+   socket.on('newMessage', (newMessageReceived) => {
+      let chat = newMessageReceived.chat
+      if (!chat) console.log('please provide chat')
+   })
 })

@@ -15,21 +15,11 @@ let socket: Socket, selectedChatCompare
 
 type propTypesMessageBox = {
    chatId: string
-   setReceiverId: (id: string) => void
 }
 
 // actual component <--
-const MessageBox = ({ chatId, setReceiverId }: propTypesMessageBox) => {
+const MessageBox = ({ chatId }: propTypesMessageBox) => {
    const [receiverUserId, setReceiverUserId] = useState<string>('')
-   // this shit to be kept in redux store
-   const [messageData, setMessageData] = useState<
-      {
-         _id: string
-         chat: string
-         message: string
-         sender: any
-      }[]
-   >()
    const dispatch = useAppDispatch()
 
    const { name } = useAppSelector((state) => state.auth.user)
@@ -69,10 +59,9 @@ const MessageBox = ({ chatId, setReceiverId }: propTypesMessageBox) => {
          setReceiverUserId(user._id)
       }
    }, [memoizedUser])
-   console.log('message', message)
    // this one is for parent state update
    useEffect(() => {
-      setReceiverId(receiverUserId)
+      // setReceiverId(receiverUserId)
    }, [receiverUserId])
    /*
    this function does 2 things

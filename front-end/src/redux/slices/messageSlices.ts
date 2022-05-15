@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 // Define a type for the login slice state
-type TypeMessage = {
+export type TypeMessage = {
    message: { _id: string; message: string; sender: any; chat: string }[]
 }
 // Define the initial state using above type

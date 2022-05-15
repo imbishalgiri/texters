@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react'
-import { useAppSelector } from 'redux/hooks'
+import { useAppSelector, useAppDispatch } from 'redux/hooks'
 import { useSearchParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { Avatar, Box, Center, Flex, Input, Spinner } from '@chakra-ui/react'
@@ -11,6 +11,7 @@ import TopMenu from './components/topMenu'
 import EmptyMessage from './utils/EmptyMessage'
 import MessageBox from './components/messageBox'
 import { TypeSendMessage, messageSender } from 'redux/actions/chat'
+import { addMessage } from 'redux/slices/messageSlices'
 
 function ChatPage() {
    const [appChatId, setAppChatId] = useState<string>('')
@@ -18,11 +19,15 @@ function ChatPage() {
    const [messageText, setMessageText] = useState<string>('')
 
    const chatId = useAppSelector((state) => state.chat?.chatId)
+   const messageFromStore = useAppSelector((state) => state.message.message)
    const [searchParams] = useSearchParams()
+   const dispatch = useAppDispatch()
 
    useEffect(() => {
       const id = searchParams.get('id')
+      const receiver = searchParams.get('u')
       if (id) setAppChatId(id)
+      if (receiver) setReceiverId(receiver)
       if (chatId) {
          setMessageText('')
          setAppChatId(chatId)
@@ -45,10 +50,13 @@ function ChatPage() {
 
    useEffect(() => {
       if (data) {
-         alert('message sent')
+         console.log('data is ', data)
+         dispatch(
+            addMessage({ message: [...messageFromStore, data.data.data] })
+         )
       }
    }, [data])
-
+   console.log(receiverId)
    return (
       <>
          <HomepageBox paddingBottom="40px">
@@ -76,12 +84,7 @@ function ChatPage() {
                   >
                      {!appChatId && <EmptyMessage />}
 
-                     {appChatId && (
-                        <MessageBox
-                           chatId={appChatId}
-                           setReceiverId={setReceiverId}
-                        />
-                     )}
+                     {appChatId && <MessageBox chatId={appChatId} />}
                      <Box
                         position="absolute"
                         padding="1rem"

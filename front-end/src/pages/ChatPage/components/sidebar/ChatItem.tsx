@@ -18,9 +18,9 @@ const ChatItem = () => {
       getAllChats()
    )
 
-   const handleClick = (id: string): void => {
-      navigate('?id=' + id)
-      dispatch(addChat({ chatId: id }))
+   const handleClick = (id: string, receiver: string): void => {
+      navigate('?id=' + id + '&u=' + receiver)
+      dispatch(addChat({ chatId: id, receiver }))
    }
 
    const getAllCards = () => {
@@ -29,13 +29,14 @@ const ChatItem = () => {
             const userData = el?.users?.find(
                (innerUser: any) => innerUser._id !== user.id
             )
+            console.log('userdata', userData)
             return (
                <CardItem
                   key={index}
                   index={index}
                   data={userData}
                   latestMessage={el.recentMessage}
-                  clickFunction={() => handleClick(el._id)}
+                  clickFunction={() => handleClick(el._id, userData._id)}
                />
             )
          })
