@@ -8,7 +8,7 @@ import {
    useToast,
 } from '@chakra-ui/react'
 
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { useForm, Controller } from 'react-hook-form'
@@ -34,7 +34,7 @@ const Signup: FC = () => {
    const password = watch('password')
    // (useMutation <type of data useMutation Returns, error, type for callback>)
    const { mutate, isError, error, isLoading, data } = useMutation<
-      User,
+      AxiosResponse,
       AxiosError,
       User
    >((newUser) => {

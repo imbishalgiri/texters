@@ -8,7 +8,19 @@ const ENDPOINT = 'chat'
  *  that is present in the header
  *
  **/
+
+export type TypeSendMessage = {
+   receiverId: string
+   message: string
+}
+
 const getAllChats = async () => await ApiRequest.get(`${ENDPOINT}/`)
 
+const getAllMessages = async (id: string) =>
+   await ApiRequest.get(`message/${id}`)
+
+const messageSender = async (message: TypeSendMessage) =>
+   await ApiRequest.post(`${ENDPOINT}/`, message)
+
 // exports right here
-export { getAllChats }
+export { getAllChats, getAllMessages, messageSender }

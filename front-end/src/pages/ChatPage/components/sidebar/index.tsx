@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
+
 import {
    Box,
    InputGroup,
@@ -10,8 +11,10 @@ import { CloseIcon } from '@chakra-ui/icons'
 import ChatItem from './ChatItem'
 import SearchItem from './SearchItem'
 // this is a main component
+
 const Sidebar = () => {
    const [searchText, setSearchText] = useState('')
+   const [connectionStatus, setConnectionStatus] = useState(false)
 
    const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value),

@@ -14,10 +14,9 @@ const ChatItem = () => {
    const { user } = useAppSelector((state) => state.auth)
    const dispatch = useAppDispatch()
    const navigate = useNavigate()
-   const { isLoading, isFetching, error, data, refetch } = useQuery<
-      AxiosResponse,
-      AxiosError
-   >('users', () => getAllChats())
+   const { data } = useQuery<AxiosResponse, AxiosError>('users', () =>
+      getAllChats()
+   )
 
    const handleClick = (id: string): void => {
       navigate('?id=' + id)
@@ -27,7 +26,7 @@ const ChatItem = () => {
    const getAllCards = () => {
       if (data) {
          return data.data.data.map((el: any, index: number) => {
-            const userData = el.users.find(
+            const userData = el?.users?.find(
                (innerUser: any) => innerUser._id !== user.id
             )
             return (

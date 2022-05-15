@@ -31,7 +31,7 @@ const CardItem = ({
       onClick={clickFunction}
    >
       <Flex alignItems="center">
-         {data.avatar && (
+         {data?.avatar && (
             <Avatar name={data?.name} src={data.avatar} marginLeft="0" />
          )}
          <Box marginLeft="10px">

@@ -1,21 +1,54 @@
-import React from 'react'
-import {
-   Avatar,
-   Box,
-   Center,
-   Flex,
-   Spacer,
-   HStack,
-   Input,
-} from '@chakra-ui/react'
+import React, { useMemo, useEffect, useState } from 'react'
+import { useAppSelector } from 'redux/hooks'
+import { useSearchParams } from 'react-router-dom'
+import { useMutation } from 'react-query'
+import { Avatar, Box, Center, Flex, Input, Spinner } from '@chakra-ui/react'
+import { ChatIcon } from '@chakra-ui/icons'
+import { AxiosResponse, AxiosError } from 'axios'
 import { HomepageBox } from 'pages/HomePage/styles/homepage.styles'
 import Sidebar from './components/sidebar'
 import TopMenu from './components/topMenu'
-import { ReceiverItem, SenderItem } from './utils/ChatItem'
-import EmptyMessage, { MessageSpinner } from './utils/EmptyMessage'
-import { ChatIcon } from '@chakra-ui/icons'
+import EmptyMessage from './utils/EmptyMessage'
+import MessageBox from './components/messageBox'
+import { TypeSendMessage, messageSender } from 'redux/actions/chat'
 
 function ChatPage() {
+   const [appChatId, setAppChatId] = useState<string>('')
+   const [receiverId, setReceiverId] = useState<string>('')
+   const [messageText, setMessageText] = useState<string>('')
+
+   const chatId = useAppSelector((state) => state.chat?.chatId)
+   const [searchParams] = useSearchParams()
+
+   useEffect(() => {
+      const id = searchParams.get('id')
+      if (id) setAppChatId(id)
+      if (chatId) {
+         setMessageText('')
+         setAppChatId(chatId)
+      }
+   }, [chatId, searchParams])
+
+   const {
+      mutate: sendMessage,
+      isLoading,
+      data,
+      error,
+      isError,
+   } = useMutation<AxiosResponse, AxiosError, TypeSendMessage>(
+      (messageObject) => messageSender(messageObject)
+   )
+
+   const handleSend = () => {
+      messageText && sendMessage({ receiverId, message: messageText })
+   }
+
+   useEffect(() => {
+      if (data) {
+         alert('message sent')
+      }
+   }, [data])
+
    return (
       <>
          <HomepageBox paddingBottom="40px">
@@ -31,7 +64,7 @@ function ChatPage() {
                      background={'pink'}
                      mb={'30px'}
                   >
-                     <Center>This is box 2</Center>
+                     <Center>This is box 2 + {receiverId}</Center>
                   </Box>
 
                   <Box
@@ -39,58 +72,16 @@ function ChatPage() {
                      height={'65vh'}
                      borderRadius={'10px 10px 0 0'}
                      position="relative"
+                     key={appChatId}
                   >
-                     {/* <Flex
-                        overflow="scroll"
-                        width="100%"
-                        height="100%"
-                        direction="column"
-                        paddingRight="2rem"
-                        paddingTop="1.5rem"
-                        paddingBottom="6rem"
-                     >
-                        <ReceiverItem
-                           // avatar="idk"
-                           name="samantha doe"
-                           text="I am Receiver first got it???"
-                        />
-                        <ReceiverItem
-                           avatar="idk"
-                           name="samantha doe"
-                           text="I am Receiver got it???"
-                        />
+                     {!appChatId && <EmptyMessage />}
 
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <ReceiverItem
-                           // avatar="idk"
-                           name="samantha doe"
-                           text="I am REceiver myan"
+                     {appChatId && (
+                        <MessageBox
+                           chatId={appChatId}
+                           setReceiverId={setReceiverId}
                         />
-                        <ReceiverItem
-                           // avatar="idk"
-                           name="samantha doe"
-                           text="I am REceidsfdsfsdf ver myan"
-                        />
-                        <ReceiverItem
-                           avatar="idk"
-                           name="samantha doe"
-                           text="I am REc  eiver myan"
-                        />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                        <SenderItem text="I am damn sender Xd" />
-                     </Flex> */}
-
-                     <EmptyMessage />
-
-                     {/* <MessageSpinner /> */}
+                     )}
                      <Box
                         position="absolute"
                         padding="1rem"
@@ -109,14 +100,23 @@ function ChatPage() {
                               _placeholder={{ color: '#464040' }}
                               width="60%"
                               margin="0 10px"
+                              value={messageText}
+                              onChange={(
+                                 event: React.ChangeEvent<HTMLInputElement>
+                              ) => setMessageText(event.target.value)}
                            />
 
-                           <ChatIcon
-                              cursor="pointer"
-                              margin="0 10px"
-                              color="#241cb5"
-                              fontSize="1.6rem"
-                           />
+                           {messageText && (
+                              <ChatIcon
+                                 cursor="pointer"
+                                 margin="0 10px"
+                                 color="#241cb5"
+                                 fontSize="1.6rem"
+                                 onClick={handleSend}
+                              />
+                           )}
+
+                           {!messageText && isLoading && <Spinner />}
                         </Center>
                      </Box>
                   </Box>

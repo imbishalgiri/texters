@@ -33,9 +33,9 @@ const Login: FC = () => {
    const navigate = useNavigate()
 
    const { mutate, isError, error, isLoading, data } = useMutation<
-      UserLogin,
+      AxiosResponse,
       AxiosError,
-      UserLogin<AxiosResponse>
+      UserLogin
    >((userTryingToLogin) => {
       return loginAction(userTryingToLogin)
    })

@@ -14,8 +14,8 @@ const getAllMessages = async (
    }
    try {
       const messages = await Message.find({ chat: chatId })
-         .populate('sender', '-password -email -_id -__v -createdAt -updatedAt')
-         .select('-createdAt -updatedAt -email -_id -__v')
+         .populate('sender', '-password -email  -__v -createdAt -updatedAt')
+         .select('-createdAt -updatedAt -email  -__v')
       return res.status(200).send({
          title: 'success',
          data: messages,

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { HStack, Avatar, Box, Spacer } from '@chakra-ui/react'
+import React from 'react'
+import { HStack, Avatar, Box } from '@chakra-ui/react'
 
 type sender = {
    avatar?: string
@@ -32,7 +32,6 @@ const ReceiverItem = ({ avatar, name, text }: sender) => {
 }
 const SenderItem = ({ text }: receiver) => (
    <>
-      <Spacer />
       <Box
          borderRadius="1rem"
          padding=".5rem 1rem"
