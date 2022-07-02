@@ -10,8 +10,7 @@ import { useAppSelector, useAppDispatch } from 'redux/hooks'
 import { addMessage, TypeMessage } from 'redux/slices/messageSlices'
 
 import io, { Socket } from 'socket.io-client'
-const ENDPOINT = 'http://localhost:4000'
-let socket: Socket, selectedChatCompare
+// global variables for socket.io-client
 
 type propTypesMessageBox = {
    chatId: string
@@ -39,17 +38,9 @@ const MessageBox = ({ chatId }: propTypesMessageBox) => {
          dispatch(addMessage({ message: data?.data?.data }))
       }
    }, [data])
-   // useEffect for message sending to implement socket io
-   useEffect(() => {
-      socket = io(ENDPOINT)
-      socket.on('connected', () => {
-         console.log('connected')
-      })
-   }, [chatId])
 
    useEffect(() => {
       refetch()
-      socket.emit('joinChat', chatId)
    }, [chatId])
 
    // this one is for local state update
@@ -59,10 +50,7 @@ const MessageBox = ({ chatId }: propTypesMessageBox) => {
          setReceiverUserId(user._id)
       }
    }, [memoizedUser])
-   // this one is for parent state update
-   useEffect(() => {
-      // setReceiverId(receiverUserId)
-   }, [receiverUserId])
+
    /*
    this function does 2 things
    1. format the response message data

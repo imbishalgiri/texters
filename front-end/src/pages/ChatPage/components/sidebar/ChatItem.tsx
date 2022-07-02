@@ -29,7 +29,6 @@ const ChatItem = () => {
             const userData = el?.users?.find(
                (innerUser: any) => innerUser._id !== user.id
             )
-            console.log('userdata', userData)
             return (
                <CardItem
                   key={index}

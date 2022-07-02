@@ -10,8 +10,12 @@ import Sidebar from './components/sidebar'
 import TopMenu from './components/topMenu'
 import EmptyMessage from './utils/EmptyMessage'
 import MessageBox from './components/messageBox'
+import io, { Socket } from 'socket.io-client'
 import { TypeSendMessage, messageSender } from 'redux/actions/chat'
 import { addMessage } from 'redux/slices/messageSlices'
+
+const ENDPOINT = 'http://localhost:4000'
+let socket: Socket
 
 function ChatPage() {
    const [appChatId, setAppChatId] = useState<string>('')
@@ -19,6 +23,7 @@ function ChatPage() {
    const [messageText, setMessageText] = useState<string>('')
 
    const chatId = useAppSelector((state) => state.chat?.chatId)
+   const { user } = useAppSelector((state) => state.auth)
    const messageFromStore = useAppSelector((state) => state.message.message)
    const [searchParams] = useSearchParams()
    const dispatch = useAppDispatch()
@@ -47,16 +52,38 @@ function ChatPage() {
    const handleSend = () => {
       messageText && sendMessage({ receiverId, message: messageText })
    }
-
+   // useEffect for message sending to implement socket io
+   useEffect(() => {
+      socket = io(ENDPOINT)
+      socket.on('receiveMessage', (message) => {
+         dispatch(addMessage({ message }))
+      })
+   })
+   useEffect(() => {
+      socket.emit('joinChat', chatId)
+   }, [chatId])
    useEffect(() => {
       if (data) {
-         console.log('data is ', data)
-         dispatch(
-            addMessage({ message: [...messageFromStore, data.data.data] })
+         console.log('d', data, chatId)
+         socket.emit(
+            'newMessage',
+            [
+               ...messageFromStore,
+               {
+                  chat: data.data.data.chat,
+                  message: messageText,
+                  sender: {
+                     avatar: user.avatar,
+                     name: user.name,
+                     _id: user.id,
+                  },
+               },
+            ],
+            chatId
          )
       }
-   }, [data])
-   console.log(receiverId)
+   }, [data, chatId])
+   console.log(messageFromStore)
    return (
       <>
          <HomepageBox paddingBottom="40px">

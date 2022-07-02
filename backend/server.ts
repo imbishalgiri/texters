@@ -51,15 +51,16 @@ const server = app.listen(port, () => {
 // types for socket io
 interface ServerToClientEvents {
    noArg: () => void
-   connected: () => void
+   connected: (message: string) => void
    basicEmit: (a: number, b: string, c: Buffer) => void
    withAck: (d: string, callback: (e: number) => void) => void
+   receiveMessage: (message: typeMessage) => void
 }
 
 interface ClientToServerEvents {
    setup: (id: string) => void
    joinChat: (id: string) => void
-   newMessage: (newMessageReceived: typeMessage) => void
+   newMessage: (message: typeMessage, room: string) => void
 }
 
 interface InterServerEvents {
@@ -89,9 +90,9 @@ const io = new Server<
 io.on('connection', (socket) => {
    console.log('connected to socket .io')
 
+   socket.to('627a15248b49306a00f48a67').emit('connected', 'hi there')
    socket.on('setup', (id) => {
       socket.join(id)
-      socket.emit('connected')
       console.log(id)
    })
 
@@ -100,8 +101,7 @@ io.on('connection', (socket) => {
       console.log('user joined room -->', id)
    })
 
-   socket.on('newMessage', (newMessageReceived) => {
-      let chat = newMessageReceived.chat
-      if (!chat) console.log('please provide chat')
+   socket.on('newMessage', (message, room) => {
+      socket.broadcast.to(room).emit('receiveMessage', message)
    })
 })
