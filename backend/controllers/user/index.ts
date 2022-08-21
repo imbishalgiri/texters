@@ -23,7 +23,6 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
 // upload image to the cloudinary
 const updateImage = async (req: Request, res: Response) => {
    const userID = req.user?._id
-   console.log(userID)
 
    try {
       const imageUrl = req.file?.path
@@ -32,7 +31,6 @@ const updateImage = async (req: Request, res: Response) => {
          const user = await User.findByIdAndUpdate(userID, {
             avatar: imageUrl,
          })
-         console.log('user', user)
          res.status(200).send({
             status: 'success',
             imageUrl: imageUrl,
